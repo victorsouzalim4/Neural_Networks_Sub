@@ -2,7 +2,7 @@ import numpy as np
 
 class Neuron:
 
-    def __init__(self, weights, learningRate = 0.1):
+    def __init__(self, weights, learningRate = 0.01):
         self.weights = weights
         self.bias = 1
         self.biasWeight = 0.1
@@ -12,7 +12,7 @@ class Neuron:
         return np.dot(self.weights, inputs) + self.bias*self.biasWeight
     
     def activation(self, output):
-        return 0 if output < 0 else 1
+        return 0 if output <= 0 else 1
     
     def weightReadjustment(self, inputs, expectedOutput, output):
         error = expectedOutput - output
