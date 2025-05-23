@@ -13,3 +13,10 @@ class Neuron:
     
     def activation(self, output):
         return 0 if output < 0 else 1
+    
+    def weightReadjustment(self, inputs, expectedOutput, output):
+        i = 0
+        while i != len(self.weights):
+            self.weights[i] = self.weights + self.learningRate(expectedOutput - output)*inputs[i]
+        
+        self.bias = self.bias + self.learningRate(expectedOutput - output)*self.bias
