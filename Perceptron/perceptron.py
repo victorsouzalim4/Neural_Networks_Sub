@@ -3,12 +3,24 @@ from Neuron.neuron import Neuron
 def perceptron(inputs, weights, expectedOutputs):
 
     n = Neuron(weights)
+    outputs = []
 
-    value = n.output(inputs[0])
-    output = n.activation(value)
-    print(value)
-    n.weightReadjustment(inputs[0], expectedOutputs[0], output)
+    while outputs != list(expectedOutputs):
+        outputs = [] 
 
-    value = n.output(inputs[0])
-    print(value)
+        for i in range(len(inputs)):
+            value = n.output(inputs[i])
+            output = n.activation(value)
+
+            outputs.append(output)
+
+            n.weightReadjustment(inputs[i], expectedOutputs[i], output)
+
+        print("Epochs outputs: ", outputs)
+
+   
+
+        
+
+        
 
