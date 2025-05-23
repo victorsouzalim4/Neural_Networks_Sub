@@ -1,15 +1,14 @@
+from Neuron.neuron import Neuron
 
-def perceptron(inputs, weights):
+def perceptron(inputs, weights, expectedOutputs):
 
-    bias = 1
-    bias_weight = 0.1
-    
-    i = 0
-    output = 0
+    n = Neuron(weights)
 
-    while i != len(inputs):
-        output += inputs[i]*weights[i]
-        i+=1
+    value = n.output(inputs[0])
+    output = n.activation(value)
+    print(value)
+    n.weightReadjustment(inputs[0], expectedOutputs[0], output)
 
-    output += bias*bias_weight
-    print(output)
+    value = n.output(inputs[0])
+    print(value)
+

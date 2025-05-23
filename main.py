@@ -1,11 +1,20 @@
 from Perceptron.perceptron import perceptron
 from Neuron.neuron import Neuron
+import numpy as np
 
-inputs = [1, 0]
-weights = [0.5, 0.2]
+inputs = np.array([
+    [0, 0, 0],
+    [0, 0, 1],
+    [0, 1, 0],
+    [0, 1, 1],
+    [1, 0, 0],
+    [1, 0, 1],
+    [1, 1, 0],
+    [1, 1, 1]
+])
 
-n = Neuron(weights)
+weights = [0.5, 0.2, 0.3]
 
-output = n.output(inputs)
+expectedOutputs = [0, 0, 0, 0, 0, 0, 0, 1]
 
-print(n.activation(output))
+perceptron(inputs, weights, expectedOutputs)

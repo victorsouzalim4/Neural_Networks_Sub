@@ -2,7 +2,7 @@ import numpy as np
 
 class Neuron:
 
-    def __init__(self, weights, learningRate = 0.01):
+    def __init__(self, weights, learningRate = 0.2):
         self.weights = weights
         self.bias = 1
         self.biasWeight = 0.1
@@ -17,6 +17,7 @@ class Neuron:
     def weightReadjustment(self, inputs, expectedOutput, output):
         i = 0
         while i != len(self.weights):
-            self.weights[i] = self.weights + self.learningRate(expectedOutput - output)*inputs[i]
+            self.weights[i] = self.weights[i] + self.learningRate*(expectedOutput - output)*inputs[i]
+            i += 1
         
-        self.bias = self.bias + self.learningRate(expectedOutput - output)*self.bias
+        self.bias = self.bias + self.learningRate*(expectedOutput - output)*self.bias
