@@ -4,12 +4,13 @@ import os
 
 def generateGif(frame_files, output_filename="perceptron_training.gif", fps=2):
     """
-    Gera um GIF a partir de uma lista de arquivos de imagem.
+    Generates a GIF from a list of image files.
 
-    :param frame_files: Lista de caminhos dos arquivos de imagem (frames).
-    :param output_filename: Nome do arquivo GIF de saída.
-    :param fps: Frames por segundo do GIF.
+    :param frame_files: List of image file paths (frames).
+    :param output_filename: Name of the output GIF file.
+    :param fps: Frames per second of the GIF (controls the speed).
     """
+
     if not os.path.exists("gifs"):
         os.makedirs("gifs")
 
@@ -17,7 +18,7 @@ def generateGif(frame_files, output_filename="perceptron_training.gif", fps=2):
     images = [imageio.imread(frame) for frame in frame_files]
     imageio.mimsave(output_path, images, fps=fps)
 
-    # Limpeza dos frames temporários
+    # temp frames removed
     for frame in frame_files:
         os.remove(frame)
 

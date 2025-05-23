@@ -11,7 +11,7 @@ def perceptron(inputs, weights, expectedOutputs, max_epochs=50, gif_name="percep
     epochs = 0
     frames = []
 
-    # Limites fixos para o gráfico
+    # setting limits for graph
     margin = 0.5
     x_min, x_max = np.min(inputs[:, 0]) - margin, np.max(inputs[:, 0]) + margin
     y_min, y_max = np.min(inputs[:, 1]) - margin, np.max(inputs[:, 1]) + margin
@@ -23,7 +23,7 @@ def perceptron(inputs, weights, expectedOutputs, max_epochs=50, gif_name="percep
             frame = saveFrame(inputs, expectedOutputs, n, epochs, x_min, x_max, y_min, y_max)
             frames.append(frame)
         else:
-            print("Fronteira de decisão não pode ser plotada, pois requer exatamente 2 entradas.")
+            print("Decision boundary can not be plotted, because it requires exactly 2 inputs.")
 
         for i in range(len(inputs)):
             value = n.output(inputs[i])
