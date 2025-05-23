@@ -7,7 +7,7 @@ def saveFrame(inputs, expectedOutputs, neuron, epoch, x_min, x_max, y_min, y_max
     """
     Saves the frame (image) of the current state of the perceptron.
 
-    :param inputs: Input data (numpy array)
+    :param inputs: Input data (already projected if needed)
     :param expectedOutputs: Expected outputs (labels)
     :param neuron: Instance of the neuron
     :param epoch: Current epoch number
@@ -20,12 +20,12 @@ def saveFrame(inputs, expectedOutputs, neuron, epoch, x_min, x_max, y_min, y_max
 
     plt.figure(figsize=(8, 6))
 
-    # plot values according to it's class
+    # Plot values according to class
     for i, point in enumerate(inputs):
         if expectedOutputs[i] == 0:
-            plt.scatter(point[0], point[1], color='red', label='Classe 0' if i == 0 else "")
+            plt.scatter(point[0], point[1], color='red', label='Class 0' if i == 0 else "")
         else:
-            plt.scatter(point[0], point[1], color='blue', label='Classe 1' if i == 0 else "")
+            plt.scatter(point[0], point[1], color='blue', label='Class 1' if i == 0 else "")
 
     # Generating the decision boundary
     x_values = np.linspace(x_min, x_max, 100)
@@ -45,7 +45,6 @@ def saveFrame(inputs, expectedOutputs, neuron, epoch, x_min, x_max, y_min, y_max
     plt.legend()
     plt.grid(True)
 
-    # setting grap limits
     plt.xlim(x_min, x_max)
     plt.ylim(y_min, y_max)
 
