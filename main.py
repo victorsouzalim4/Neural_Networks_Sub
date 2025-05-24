@@ -17,4 +17,4 @@ weights = [0.5, 0.2, 0.3]
 
 expectedOutputs = [0, 0, 0, 0, 0, 0, 0, 1]
 
-perceptron(inputs, weights, expectedOutputs, 100, "AND.gif")
+perceptron(inputs, expectedOutputs, 100, "AND.gif")
