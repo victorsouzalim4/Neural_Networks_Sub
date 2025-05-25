@@ -6,9 +6,21 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epoch
 
     layers = neuralNetworkGen(initialLayerWidth, depth, inputs)
 
-    output = passFoward(layers, inputs)
+    outputsPerLayer = passFoward(layers, inputs)
 
-    print(output)
+    derivates = []
+
+    for layer in outputsPerLayer:
+        derivatesPerLayer = []
+        for output in layer:
+            derivatesPerLayer.append(sigmoidDerivative(output))
+        derivates.append(derivatesPerLayer)
+
+    
+    print(derivates)
+
+
+    print(outputsPerLayer)
    
 
     
@@ -44,3 +56,5 @@ def passFoward(layers, inputs):
 
     return outputsPerLayer
     
+def sigmoidDerivative(activation):
+    return activation * (1 - activation)
