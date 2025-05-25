@@ -2,24 +2,32 @@ from Neuron.neuron import Neuron
 from Utils.neural_network_gen import neuralNetworkGen
 import math
 
-def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epochs=50, gif_name="perceptron_training.gif"):
-
+def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs=50, errorThreshold=0.01):
     layers = neuralNetworkGen(initialLayerWidth, depth, inputs)
     epoch = 0
+    errorMedio = float('inf')
 
-    while epoch < max_epochs:
+    x = []
+
+    while epoch < maxEpochs and errorMedio > errorThreshold:
         outputs = []
+        totalError = 0
 
         for input, expectedOutput in zip(inputs, expectedOutputs):
-            outputsPerLayer = passFoward(layers, input)
+            outputsPerLayer = passForward(layers, input)
             derivates = []
 
-            outputs.append(outputsPerLayer[-1])
+            output = outputsPerLayer[-1][0]  # Saída da última camada (supondo 1 neurônio de saída)
+            outputs.append(output)
 
+            totalError += abs(expectedOutput - output)
+
+            # Cálculo das derivadas
             for layer in outputsPerLayer:
-                derivatesPerLayer = [sigmoidDerivative(output) for output in layer]
+                derivatesPerLayer = [sigmoidDerivative(out) for out in layer]
                 derivates.append(derivatesPerLayer)
 
+            # Cálculo dos erros da camada de saída
             outputLayerErrors = calculateOutputLayerError(
                 expectedOutput,
                 derivates[-1],
@@ -31,6 +39,7 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epoch
 
             errorsPerLayer = [outputLayerErrors]
 
+            # Cálculo dos erros para as camadas ocultas
             for i in range(len(layers) - 1):
                 layerErrors = calculateError(
                     layers[-i - 2],
@@ -45,21 +54,30 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epoch
 
             errorsPerLayer.reverse()
 
+            # Ajuste dos pesos
             for index, (layer, errors) in enumerate(zip(layers, errorsPerLayer)):
                 if index == 0:
-                    layer_inputs = input
+                    layerInputs = input
                 else:
-                    layer_inputs = outputsPerLayer[index - 1]
+                    layerInputs = outputsPerLayer[index - 1]
 
                 for neuron, error in zip(layer, errors):
-                    neuron.weightReadjustment(layer_inputs, error=error)
+                    neuron.weightReadjustment(layerInputs, error=error)
 
+        x = outputs
+        # Cálculo do erro médio
+        errorMedio = totalError / len(inputs)
+
+        print(f"Época {epoch + 1}: Erro médio = {errorMedio}")
         epoch += 1
-        print(outputs)
+
+    print("Treinamento finalizado.")
+    print(outputs)
 
 
 
-def passFoward(layers, input):
+
+def passForward(layers, input):
     
     data = input
     outputsPerLayer = []
