@@ -11,6 +11,10 @@ class Neuron:
     def output(self, inputs):
         return np.dot(self.weights, inputs) + self.bias*self.biasWeight
     
+    def sigmoid(self, input):
+        return 1 / (1 + np.exp(-input))
+
+    
     def activation(self, output):
         return 0 if output <= 0 else 1
     

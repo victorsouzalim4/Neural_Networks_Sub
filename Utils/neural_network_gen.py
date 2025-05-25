@@ -26,7 +26,6 @@ def neuralNetworkGen(initialLayerWidth, depth, inputs):
         layers.append(layer)
     
     #output layer
-    print(lastLayerLenght)
     outputLayer = [Neuron(lastLayerLenght)]
     layers.append(outputLayer)
 

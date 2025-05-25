@@ -6,6 +6,22 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epoch
 
     layers = neuralNetworkGen(initialLayerWidth, depth, inputs)
 
+    # for input in inputs:
+    data = inputs[0]
+    i = 0
+    for layer in layers:
+        layerOutputs = []
+
+        for neuron in layer:
+            intermediaryOutput = neuron.output(data)
+            layerOutputs.append(neuron.sigmoid(intermediaryOutput))
+
+        data = layerOutputs
+        print(f"\n Camada {i}")
+        print(data)
+        i+=1
+        #print(layerOutputs)
+
     
 
 
