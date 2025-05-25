@@ -24,9 +24,10 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epoch
 
 
 def passFoward(layers, inputs):
-    # for input in inputs:
+    
     data = inputs[0]
-    i = 0
+    outputsPerLayer = []
+    # i = 0
     for layer in layers:
         layerOutputs = []
 
@@ -35,11 +36,11 @@ def passFoward(layers, inputs):
             layerOutputs.append(neuron.sigmoid(linearOutput))
 
         data = layerOutputs
+        outputsPerLayer.append(data)
         # print(f"\n Camada {i}")
         # print(data)
         # i+=1
-        #print(layerOutputs)
-    output = data
+        # print(layerOutputs)
 
-    return output
+    return outputsPerLayer
     
