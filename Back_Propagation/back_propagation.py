@@ -42,6 +42,15 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epoch
         nextLayer = layers[len(layers) - i - 2]
     
     print(errorsPerLayer)
+
+    errorsPerLayer.reverse()
+
+
+    for layer, errors in zip(layers, errorsPerLayer):
+        for neuron, error in zip(layer, errors):
+            neuron.weightReadjustment(inputs[0], error)
+
+
     # for i, layer in enumerate(layers):
     #     print(f"\n🧠 Camada {i} ({len(layer)} neurônios)")
     #     print("-" * 40)

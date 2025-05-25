@@ -17,10 +17,15 @@ class Neuron:
     def stepFunction(self, output):
         return 0 if output <= 0 else 1
     
-    def weightReadjustment(self, inputs, expectedOutput, output):
-        error = expectedOutput - output
+    def weightReadjustment(self, inputs, error=None, expectedOutput=None, output=None):
+
+        if error is None:
+            if expectedOutput is None or output is None:
+                raise ValueError("Se 'error' não for fornecido, 'expectedOutput' e 'output' são obrigatórios.")
+            error = expectedOutput - output  # Perceptron
 
         for i in range(len(self.weights)):
             self.weights[i] += self.learningRate * error * inputs[i]
 
         self.biasWeight += self.learningRate * error
+
