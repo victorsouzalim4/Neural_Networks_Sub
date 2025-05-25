@@ -17,15 +17,31 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epoch
         derivates.append(derivatesPerLayer)
 
     
-    print(derivates)
+    #print(derivates)
 
+    #print(outputsPerLayer)
 
-    print(outputsPerLayer)
-   
+    outputLayerErrors = calculateOutputLayerError(expectedOutputs[0], derivates[len(derivates) - 1], outputsPerLayer[len(outputsPerLayer) - 1])
 
+    nextLayerErrors = outputLayerErrors
+    nextLayer = layers[len(layers) - 1]
+
+    errorsPerLayer = []
+    errorsPerLayer.append(outputLayerErrors)
+
+    for i in range(len(layers) - 1):  # -1 porque não calcula erro para a camada de saída
+        layerErrors = calculateError(
+            layers[len(layers) - i - 2],                     # 🔥 camada atual (de trás pra frente)
+            nextLayer,                                       # 🔥 camada seguinte
+            nextLayerErrors,                                 # 🔥 erros da camada seguinte
+            outputsPerLayer[len(layers) - i - 2],            # 🔥 outputs da camada atual
+            derivates[len(derivates) - i - 2]                # 🔥 derivadas da camada atual
+        )
+        errorsPerLayer.append(layerErrors)
+        nextLayerErrors = layerErrors
+        nextLayer = layers[len(layers) - i - 2]
     
-
-
+    print(errorsPerLayer)
     # for i, layer in enumerate(layers):
     #     print(f"\n🧠 Camada {i} ({len(layer)} neurônios)")
     #     print("-" * 40)
@@ -58,3 +74,47 @@ def passFoward(layers, inputs):
     
 def sigmoidDerivative(activation):
     return activation * (1 - activation)
+
+
+def calculateError(layer, nextLayer, nextLayerErrors, layerOutput, derivates):
+    """
+    Calcula o erro (delta) para cada neurônio de uma camada oculta.
+
+    Args:
+        layer (list): Lista dos neurônios da camada atual.
+        nextLayer (list): Lista dos neurônios da camada seguinte.
+        nextLayerErrors (list): Lista dos deltas (erros) da camada seguinte.
+        layerOutput (list): Saídas (ativadas) da camada atual.
+        derivates (list): Derivadas da função de ativação da camada atual.
+
+    Returns:
+        list: Lista de erros (deltas) para cada neurônio da camada atual.
+    """
+    errors = []
+
+    for i, neuron in enumerate(layer):
+        error_sum = 0
+
+        for j, nextNeuron in enumerate(nextLayer):
+            # Pega o peso que conecta este neurônio atual (i) ao neurônio da camada seguinte (j)
+            weight = nextNeuron.weights[i]  # ✔️ Aqui está o ponto chave
+            error_sum += weight * nextLayerErrors[j]
+
+        # Calcula delta (erro) para este neurônio
+        error = derivates[i] * error_sum
+        errors.append(error)
+
+    return errors
+
+
+
+
+def calculateOutputLayerError(expectedOutput, derivates, output):
+
+    outputLayerErrors = []
+    for i in range(len(derivates)):
+        outputLayerErrors.append((expectedOutput - output[i]) * derivates[i])
+
+    return outputLayerErrors
+
+    
