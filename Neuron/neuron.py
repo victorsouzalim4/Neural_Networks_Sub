@@ -8,14 +8,13 @@ class Neuron:
         self.biasWeight = 0.1
         self.learningRate = learningRate
 
-    def output(self, inputs):
+    def netInput(self, inputs):
         return np.dot(self.weights, inputs) + self.bias*self.biasWeight
     
     def sigmoid(self, input):
         return 1 / (1 + np.exp(-input))
-
     
-    def activation(self, output):
+    def stepFunction(self, output):
         return 0 if output <= 0 else 1
     
     def weightReadjustment(self, inputs, expectedOutput, output):

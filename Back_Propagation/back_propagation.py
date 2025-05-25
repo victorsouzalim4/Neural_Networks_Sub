@@ -13,8 +13,8 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epoch
         layerOutputs = []
 
         for neuron in layer:
-            intermediaryOutput = neuron.output(data)
-            layerOutputs.append(neuron.sigmoid(intermediaryOutput))
+            linearOutput = neuron.netInput(data)
+            layerOutputs.append(neuron.sigmoid(linearOutput))
 
         data = layerOutputs
         print(f"\n Camada {i}")

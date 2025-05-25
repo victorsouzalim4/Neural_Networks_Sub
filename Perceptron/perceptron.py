@@ -52,8 +52,8 @@ def perceptron(inputs, expectedOutputs, max_epochs=50, gif_name="perceptron_trai
             frames.append(frame)
 
         for i in range(len(inputs)):
-            value = n.output(inputs[i])
-            output = n.activation(value)
+            linearOutput = n.netInput(inputs[i])
+            output = n.stepFunction(linearOutput)
 
             outputs.append(output)
 
