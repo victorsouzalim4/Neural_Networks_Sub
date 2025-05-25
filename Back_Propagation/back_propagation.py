@@ -5,64 +5,63 @@ import math
 def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, max_epochs=50, gif_name="perceptron_training.gif"):
 
     layers = neuralNetworkGen(initialLayerWidth, depth, inputs)
+    epoch = 0
 
-    outputsPerLayer = passFoward(layers, inputs)
+    while epoch < max_epochs:
+        outputs = []
 
-    derivates = []
+        for input, expectedOutput in zip(inputs, expectedOutputs):
+            outputsPerLayer = passFoward(layers, input)
+            derivates = []
 
-    for layer in outputsPerLayer:
-        derivatesPerLayer = []
-        for output in layer:
-            derivatesPerLayer.append(sigmoidDerivative(output))
-        derivates.append(derivatesPerLayer)
+            outputs.append(outputsPerLayer[-1])
 
+            for layer in outputsPerLayer:
+                derivatesPerLayer = [sigmoidDerivative(output) for output in layer]
+                derivates.append(derivatesPerLayer)
+
+            outputLayerErrors = calculateOutputLayerError(
+                expectedOutput,
+                derivates[-1],
+                outputsPerLayer[-1]
+            )
+
+            nextLayerErrors = outputLayerErrors
+            nextLayer = layers[-1]
+
+            errorsPerLayer = [outputLayerErrors]
+
+            for i in range(len(layers) - 1):
+                layerErrors = calculateError(
+                    layers[-i - 2],
+                    nextLayer,
+                    nextLayerErrors,
+                    outputsPerLayer[-i - 2],
+                    derivates[-i - 2]
+                )
+                errorsPerLayer.append(layerErrors)
+                nextLayerErrors = layerErrors
+                nextLayer = layers[-i - 2]
+
+            errorsPerLayer.reverse()
+
+            for index, (layer, errors) in enumerate(zip(layers, errorsPerLayer)):
+                if index == 0:
+                    layer_inputs = input
+                else:
+                    layer_inputs = outputsPerLayer[index - 1]
+
+                for neuron, error in zip(layer, errors):
+                    neuron.weightReadjustment(layer_inputs, error=error)
+
+        epoch += 1
+        print(outputs)
+
+
+
+def passFoward(layers, input):
     
-    #print(derivates)
-
-    #print(outputsPerLayer)
-
-    outputLayerErrors = calculateOutputLayerError(expectedOutputs[0], derivates[len(derivates) - 1], outputsPerLayer[len(outputsPerLayer) - 1])
-
-    nextLayerErrors = outputLayerErrors
-    nextLayer = layers[len(layers) - 1]
-
-    errorsPerLayer = []
-    errorsPerLayer.append(outputLayerErrors)
-
-    for i in range(len(layers) - 1):  # -1 porque não calcula erro para a camada de saída
-        layerErrors = calculateError(
-            layers[len(layers) - i - 2],                     # 🔥 camada atual (de trás pra frente)
-            nextLayer,                                       # 🔥 camada seguinte
-            nextLayerErrors,                                 # 🔥 erros da camada seguinte
-            outputsPerLayer[len(layers) - i - 2],            # 🔥 outputs da camada atual
-            derivates[len(derivates) - i - 2]                # 🔥 derivadas da camada atual
-        )
-        errorsPerLayer.append(layerErrors)
-        nextLayerErrors = layerErrors
-        nextLayer = layers[len(layers) - i - 2]
-    
-    print(errorsPerLayer)
-
-    errorsPerLayer.reverse()
-
-
-    for layer, errors in zip(layers, errorsPerLayer):
-        for neuron, error in zip(layer, errors):
-            neuron.weightReadjustment(inputs[0], error)
-
-
-    # for i, layer in enumerate(layers):
-    #     print(f"\n🧠 Camada {i} ({len(layer)} neurônios)")
-    #     print("-" * 40)
-
-    #     for j, neuron in enumerate(layer):
-    #         print(f"  🔹 Neurônio {j}: Pesos -> {neuron.weights}")
-    #     print("-" * 40)
-
-
-def passFoward(layers, inputs):
-    
-    data = inputs[0]
+    data = input
     outputsPerLayer = []
     # i = 0
     for layer in layers:
@@ -83,7 +82,6 @@ def passFoward(layers, inputs):
     
 def sigmoidDerivative(activation):
     return activation * (1 - activation)
-
 
 def calculateError(layer, nextLayer, nextLayerErrors, layerOutput, derivates):
     """
@@ -114,9 +112,6 @@ def calculateError(layer, nextLayer, nextLayerErrors, layerOutput, derivates):
         errors.append(error)
 
     return errors
-
-
-
 
 def calculateOutputLayerError(expectedOutput, derivates, output):
 
