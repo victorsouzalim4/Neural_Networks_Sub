@@ -3,34 +3,32 @@ from Utils.neural_network_gen import neuralNetworkGen
 from Utils.plot_Error_Curve import plotErrorCurve
 import math
 
-def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs=50, errorThreshold=0.01, fileName = "grafico"):
+
+def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs=50, errorThreshold=0.01, fileName="grafico", activation="tanh"):
     layers = neuralNetworkGen(initialLayerWidth, depth, inputs)
     epoch = 0
     errorMedio = float('inf')
     errorHistory = []
-
-
-    x = []
 
     while epoch < maxEpochs and errorMedio > errorThreshold:
         outputs = []
         totalError = 0
 
         for input, expectedOutput in zip(inputs, expectedOutputs):
-            outputsPerLayer = passForward(layers, input)
+            outputsPerLayer = passForward(layers, input, activation)
             derivates = []
 
-            output = outputsPerLayer[-1][0]  # Saída da última camada (supondo 1 neurônio de saída)
+            output = outputsPerLayer[-1][0]  # Saída da última camada
             outputs.append(output)
 
             totalError += abs(expectedOutput - output)
 
-            # Cálculo das derivadas
+            # 🔥 Cálculo das derivadas
             for layer in outputsPerLayer:
-                derivatesPerLayer = [sigmoidDerivative(out) for out in layer]
+                derivatesPerLayer = [getDerivative(out, activation) for out in layer]
                 derivates.append(derivatesPerLayer)
 
-            # Cálculo dos erros da camada de saída
+            # 🔥 Cálculo dos erros da camada de saída
             outputLayerErrors = calculateOutputLayerError(
                 expectedOutput,
                 derivates[-1],
@@ -42,7 +40,7 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
 
             errorsPerLayer = [outputLayerErrors]
 
-            # Cálculo dos erros para as camadas ocultas
+            # 🔥 Cálculo dos erros para camadas ocultas
             for i in range(len(layers) - 1):
                 layerErrors = calculateError(
                     layers[-i - 2],
@@ -57,7 +55,7 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
 
             errorsPerLayer.reverse()
 
-            # Ajuste dos pesos
+            # 🔥 Ajuste dos pesos
             for index, (layer, errors) in enumerate(zip(layers, errorsPerLayer)):
                 if index == 0:
                     layerInputs = input
@@ -67,8 +65,6 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
                 for neuron, error in zip(layer, errors):
                     neuron.weightReadjustment(layerInputs, error=error)
 
-        x = outputs
-        # Cálculo do erro médio
         errorMedio = totalError / len(inputs)
         errorHistory.append(errorMedio)
 
@@ -81,70 +77,66 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
     plotErrorCurve(errorHistory, fileName)
 
 
-
-
-
-
-def passForward(layers, input):
-    
+# 🔥 Pass Forward parametrizado
+def passForward(layers, input, activation="tanh"):
     data = input
     outputsPerLayer = []
-    # i = 0
+
     for layer in layers:
         layerOutputs = []
 
         for neuron in layer:
             linearOutput = neuron.netInput(data)
-            layerOutputs.append(neuron.sigmoid(linearOutput))
+
+            if activation == "sigmoid":
+                layerOutputs.append(neuron.sigmoid(linearOutput))
+            elif activation == "tanh":
+                layerOutputs.append(neuron.tanh(linearOutput))
+            else:
+                raise ValueError(f"Função de ativação '{activation}' não suportada.")
 
         data = layerOutputs
-        outputsPerLayer.append(data)
-        # print(f"\n Camada {i}")
-        # print(data)
-        # i+=1
-        # print(layerOutputs)
+        outputsPerLayer.append(layerOutputs)
 
     return outputsPerLayer
-    
+
+
+# 🔥 Funções de derivada parametrizadas
+def getDerivative(activation, activationFunction):
+    if activationFunction == "sigmoid":
+        return sigmoidDerivative(activation)
+    elif activationFunction == "tanh":
+        return tanhDerivative(activation)
+    else:
+        raise ValueError(f"Derivada para ativação '{activationFunction}' não implementada.")
+
+
 def sigmoidDerivative(activation):
     return activation * (1 - activation)
 
+
+def tanhDerivative(activation):
+    return 1 - activation ** 2
+
+
 def calculateError(layer, nextLayer, nextLayerErrors, layerOutput, derivates):
-    """
-    Calcula o erro (delta) para cada neurônio de uma camada oculta.
-
-    Args:
-        layer (list): Lista dos neurônios da camada atual.
-        nextLayer (list): Lista dos neurônios da camada seguinte.
-        nextLayerErrors (list): Lista dos deltas (erros) da camada seguinte.
-        layerOutput (list): Saídas (ativadas) da camada atual.
-        derivates (list): Derivadas da função de ativação da camada atual.
-
-    Returns:
-        list: Lista de erros (deltas) para cada neurônio da camada atual.
-    """
     errors = []
 
     for i, neuron in enumerate(layer):
-        error_sum = 0
+        errorSum = 0
 
         for j, nextNeuron in enumerate(nextLayer):
-            # Pega o peso que conecta este neurônio atual (i) ao neurônio da camada seguinte (j)
-            weight = nextNeuron.weights[i]  # ✔️ Aqui está o ponto chave
-            error_sum += weight * nextLayerErrors[j]
+            weight = nextNeuron.weights[i]
+            errorSum += weight * nextLayerErrors[j]
 
-        # Calcula delta (erro) para este neurônio
-        error = derivates[i] * error_sum
+        error = derivates[i] * errorSum
         errors.append(error)
 
     return errors
 
-def calculateOutputLayerError(expectedOutput, derivates, output):
 
+def calculateOutputLayerError(expectedOutput, derivates, output):
     outputLayerErrors = []
     for i in range(len(derivates)):
         outputLayerErrors.append((expectedOutput - output[i]) * derivates[i])
-
     return outputLayerErrors
-
-    

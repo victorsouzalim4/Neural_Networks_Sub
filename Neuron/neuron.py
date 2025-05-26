@@ -17,6 +17,9 @@ class Neuron:
     def stepFunction(self, output):
         return 0 if output <= 0 else 1
     
+    def tanh(self, input):
+        return np.tanh(input)
+
     def weightReadjustment(self, inputs, error=None, expectedOutput=None, output=None):
 
         if error is None:
