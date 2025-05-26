@@ -1,8 +1,10 @@
 from Neuron.neuron import Neuron
 from Neural_Network.neural_network_gen import neuralNetworkGen
+from Neural_Network.forward import passForward
 from Utils.plot_Error_Curve import plotErrorCurve
 from Utils.activation_functions import getDerivative
 from Utils.error_functions import calculateError, calculateOutputLayerError
+from Utils.plot_decision_boundary import plotDecisionBoundary
 
 
 def backPropagation(
@@ -12,9 +14,10 @@ def backPropagation(
     expectedOutputs,
     maxEpochs=50,
     errorThreshold=0.01,
-    fileName="grafico",
+    fileName="error_curve.png",
     activation="tanh",
-    update_mode="online"  # "online" ou "batch"
+    update_mode="online",
+    plot_decision_boundary=True
 ):
     layers = neuralNetworkGen(initialLayerWidth, depth, inputs)
     epoch = 0
@@ -26,7 +29,7 @@ def backPropagation(
         totalError = 0
 
         batch_weight_updates = [
-            [ [0] * len(neuron.weights) for neuron in layer ] 
+            [[0] * len(neuron.weights) for neuron in layer]
             for layer in layers
         ]
 
@@ -95,6 +98,7 @@ def backPropagation(
         errorHistory.append(errorMse)
 
         print(f"Época {epoch + 1}: Erro médio = {errorMse}")
+
         epoch += 1
 
     print("Treinamento finalizado.")
@@ -102,25 +106,12 @@ def backPropagation(
 
     plotErrorCurve(errorHistory, fileName)
 
-
-def passForward(layers, input, activation="tanh"):
-    data = input
-    outputsPerLayer = []
-
-    for layer in layers:
-        layerOutputs = []
-
-        for neuron in layer:
-            linearOutput = neuron.netInput(data)
-
-            if activation == "sigmoid":
-                layerOutputs.append(neuron.sigmoid(linearOutput))
-            elif activation == "tanh":
-                layerOutputs.append(neuron.tanh(linearOutput))
-            else:
-                raise ValueError(f"Função de ativação '{activation}' não suportada.")
-
-        data = layerOutputs
-        outputsPerLayer.append(layerOutputs)
-
-    return outputsPerLayer
+    if plot_decision_boundary:
+        plotDecisionBoundary(
+            layers,
+            inputs,
+            expectedOutputs,
+            activation=activation,
+            filename="decision_boundary_final.png",
+            outputDir="Backpropagation_benchmarks/DecisionBoundary"
+        )
