@@ -1,6 +1,8 @@
 from Neuron.neuron import Neuron
 from Neural_Network.neural_network_gen import neuralNetworkGen
 from Utils.plot_Error_Curve import plotErrorCurve
+from Utils.activation_functions import getDerivative
+from Utils.error_functions import calculateError, calculateOutputLayerError
 import math
 
 
@@ -23,12 +25,12 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
 
             totalError += abs(expectedOutput - output)
 
-            # 🔥 Cálculo das derivadas
+            # Cálculo das derivadas
             for layer in outputsPerLayer:
                 derivatesPerLayer = [getDerivative(out, activation) for out in layer]
                 derivates.append(derivatesPerLayer)
 
-            # 🔥 Cálculo dos erros da camada de saída
+            # Cálculo dos erros da camada de saída
             outputLayerErrors = calculateOutputLayerError(
                 expectedOutput,
                 derivates[-1],
@@ -40,7 +42,7 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
 
             errorsPerLayer = [outputLayerErrors]
 
-            # 🔥 Cálculo dos erros para camadas ocultas
+            # Cálculo dos erros para camadas ocultas
             for i in range(len(layers) - 1):
                 layerErrors = calculateError(
                     layers[-i - 2],
@@ -55,7 +57,7 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
 
             errorsPerLayer.reverse()
 
-            # 🔥 Ajuste dos pesos
+            # Ajuste dos pesos
             for index, (layer, errors) in enumerate(zip(layers, errorsPerLayer)):
                 if index == 0:
                     layerInputs = input
@@ -76,8 +78,6 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
 
     plotErrorCurve(errorHistory, fileName)
 
-
-# 🔥 Pass Forward parametrizado
 def passForward(layers, input, activation="tanh"):
     data = input
     outputsPerLayer = []
@@ -99,44 +99,3 @@ def passForward(layers, input, activation="tanh"):
         outputsPerLayer.append(layerOutputs)
 
     return outputsPerLayer
-
-
-# 🔥 Funções de derivada parametrizadas
-def getDerivative(activation, activationFunction):
-    if activationFunction == "sigmoid":
-        return sigmoidDerivative(activation)
-    elif activationFunction == "tanh":
-        return tanhDerivative(activation)
-    else:
-        raise ValueError(f"Derivada para ativação '{activationFunction}' não implementada.")
-
-
-def sigmoidDerivative(activation):
-    return activation * (1 - activation)
-
-
-def tanhDerivative(activation):
-    return 1 - activation ** 2
-
-
-def calculateError(layer, nextLayer, nextLayerErrors, layerOutput, derivates):
-    errors = []
-
-    for i, neuron in enumerate(layer):
-        errorSum = 0
-
-        for j, nextNeuron in enumerate(nextLayer):
-            weight = nextNeuron.weights[i]
-            errorSum += weight * nextLayerErrors[j]
-
-        error = derivates[i] * errorSum
-        errors.append(error)
-
-    return errors
-
-
-def calculateOutputLayerError(expectedOutput, derivates, output):
-    outputLayerErrors = []
-    for i in range(len(derivates)):
-        outputLayerErrors.append((expectedOutput - output[i]) * derivates[i])
-    return outputLayerErrors
