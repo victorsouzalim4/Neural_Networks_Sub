@@ -1,8 +1,9 @@
 from Neuron.neuron import Neuron
 from Utils.neural_network_gen import neuralNetworkGen
+from Utils.plot_Error_Curve import plotErrorCurve
 import math
 
-def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs=50, errorThreshold=0.01):
+def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs=50, errorThreshold=0.01, fileName = "grafico"):
     layers = neuralNetworkGen(initialLayerWidth, depth, inputs)
     epoch = 0
     errorMedio = float('inf')
@@ -77,7 +78,9 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
     print("Treinamento finalizado.")
     print(outputs)
 
-    return errorHistory
+    plotErrorCurve(errorHistory, fileName)
+
+
 
 
 
