@@ -6,6 +6,8 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
     layers = neuralNetworkGen(initialLayerWidth, depth, inputs)
     epoch = 0
     errorMedio = float('inf')
+    errorHistory = []
+
 
     x = []
 
@@ -67,12 +69,15 @@ def backPropagation(initialLayerWidth, depth, inputs, expectedOutputs, maxEpochs
         x = outputs
         # Cálculo do erro médio
         errorMedio = totalError / len(inputs)
+        errorHistory.append(errorMedio)
 
         print(f"Época {epoch + 1}: Erro médio = {errorMedio}")
         epoch += 1
 
     print("Treinamento finalizado.")
     print(outputs)
+
+    return errorHistory
 
 
 
