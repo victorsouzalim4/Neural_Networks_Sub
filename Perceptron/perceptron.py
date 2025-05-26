@@ -56,8 +56,7 @@ def perceptron(inputs, expectedOutputs, max_epochs=50, gif_name="perceptron_trai
             output = n.stepFunction(linearOutput)
 
             outputs.append(output)
-
-            n.weightReadjustment(inputs[i], expectedOutputs[i], output)
+            n.weightReadjustment(inputs[i], None, expectedOutputs[i], output)
 
         print(f"Epoch {epochs}: Outputs -> {outputs}")
         epochs += 1

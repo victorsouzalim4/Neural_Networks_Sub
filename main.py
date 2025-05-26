@@ -18,6 +18,6 @@ weights = [0.5, 0.2, 0.3]
 
 expectedOutputs = [0, 0, 0, 0, 0, 0, 0, 1]
 
-##perceptron(inputs, expectedOutputs, 100, "AND.gif")
+perceptron(inputs, expectedOutputs, 100, "AND.gif")
 
-backPropagation(3, 4, inputs, expectedOutputs, 10000)
+##backPropagation(3, 4, inputs, expectedOutputs, 10000)
