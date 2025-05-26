@@ -1,5 +1,5 @@
 from Neuron.neuron import Neuron
-from Utils.neural_network_gen import neuralNetworkGen
+from Neural_Network.neural_network_gen import neuralNetworkGen
 from Utils.plot_Error_Curve import plotErrorCurve
 import math
 

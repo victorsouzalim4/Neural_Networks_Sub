@@ -11,10 +11,10 @@ def generateGif(frame_files, output_filename="perceptron_training.gif", fps=2):
     :param fps: Frames per second of the GIF (controls the speed).
     """
 
-    if not os.path.exists("gifs"):
-        os.makedirs("gifs")
+    if not os.path.exists("Gifs"):
+        os.makedirs("Gifs")
 
-    output_path = os.path.join("gifs", output_filename)
+    output_path = os.path.join("Gifs", output_filename)
     images = [imageio.imread(frame) for frame in frame_files]
     imageio.mimsave(output_path, images, fps=fps)
 
