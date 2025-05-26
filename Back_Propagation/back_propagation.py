@@ -18,10 +18,10 @@ def backPropagation(
 ):
     layers = neuralNetworkGen(initialLayerWidth, depth, inputs)
     epoch = 0
-    errorMedio = float('inf')
+    errorMse = float('inf')
     errorHistory = []
 
-    while epoch < maxEpochs and errorMedio > errorThreshold:
+    while epoch < maxEpochs and errorMse > errorThreshold:
         outputs = []
         totalError = 0
 
@@ -37,7 +37,7 @@ def backPropagation(
             output = outputsPerLayer[-1][0]
             outputs.append(output)
 
-            totalError += abs(expectedOutput - output)
+            totalError += (expectedOutput - output) ** 2
 
             for layer in outputsPerLayer:
                 derivatesPerLayer = [getDerivative(out, activation) for out in layer]
@@ -91,10 +91,10 @@ def backPropagation(
                         avg_delta = batch_weight_updates[layerIndex][neuronIndex][wIndex] / len(inputs)
                         neuron.weights[wIndex] += avg_delta
 
-        errorMedio = totalError / len(inputs)
-        errorHistory.append(errorMedio)
+        errorMse = totalError / len(inputs)
+        errorHistory.append(errorMse)
 
-        print(f"Época {epoch + 1}: Erro médio = {errorMedio}")
+        print(f"Época {epoch + 1}: Erro médio = {errorMse}")
         epoch += 1
 
     print("Treinamento finalizado.")
