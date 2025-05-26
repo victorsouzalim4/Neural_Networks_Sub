@@ -111,7 +111,8 @@ def backPropagation(
             layers,
             inputs,
             expectedOutputs,
+            fileName,
             activation=activation,
-            filename="decision_boundary_final.png",
+            filename=fileName,
             outputDir="Backpropagation_benchmarks/DecisionBoundary"
         )

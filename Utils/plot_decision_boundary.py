@@ -9,6 +9,7 @@ def plotDecisionBoundary(
     layers,
     inputs,
     expectedOutputs,
+    title,
     activation="tanh",
     filename="decision_boundary.png",
     outputDir="Backpropagation_benchmarks/DecisionBoundary"
@@ -56,7 +57,7 @@ def plotDecisionBoundary(
             s=80
         )
 
-        plt.title('Fronteira de Decisão - 2 Entradas')
+        plt.title(title)
         plt.xlabel('Feature 1')
         plt.ylabel('Feature 2')
         plt.grid(True)
