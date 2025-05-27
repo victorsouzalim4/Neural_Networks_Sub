@@ -1,7 +1,7 @@
 
 # 🧠 Neural Networks from Scratch
 
-Este projeto tem como objetivo **implementar do zero dois algoritmos fundamentais de redes neurais: o Perceptron e o Backpropagation**, sem utilizar frameworks de machine learning como TensorFlow, PyTorch ou Scikit-Learn.
+Este projeto tem como objetivo **implementar do zero dois algoritmos fundamentais de redes neurais: o Perceptron e o Backpropagation**, sem utilizar frameworks de machine learning como TensorFlow, PyTorch.
 
 O desenvolvimento foi feito para aprofundar o entendimento dos conceitos matemáticos e computacionais que estão por trás das redes neurais, além de servir como material de estudo e referência sobre aprendizado supervisionado.
 
