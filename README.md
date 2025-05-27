@@ -23,7 +23,6 @@ Neural_Networks/
 │
 ├── perceptron/           # Implementação do Perceptron
 ├── backpropagation/      # Implementação da rede com Backpropagation
-├── datasets/             # Conjuntos de dados para treino e testes
 ├── utils/                # Funções auxiliares
 ├── requirements.txt      # Dependências do projeto
 └── README.md             # Documentação
