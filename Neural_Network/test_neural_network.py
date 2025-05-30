@@ -1,4 +1,4 @@
-from Neural_Network.forward import passForward
+from Neural_Networks_Sub.Neural_Network.forward import passForward
 
 def testNeuralNetwork(layers, test_inputs, test_expected_outputs=None, activation="tanh", threshold=0.0):
     predictions = []

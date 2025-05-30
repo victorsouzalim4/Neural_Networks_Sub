@@ -1,4 +1,4 @@
-from Neuron.neuron import Neuron
+from Neural_Networks_Sub.Neuron.neuron import Neuron
 import math
 
 def neuralNetworkGen(initialLayerWidth, depth, inputs):

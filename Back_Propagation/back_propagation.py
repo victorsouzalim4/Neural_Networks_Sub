@@ -1,10 +1,9 @@
-from Neuron.neuron import Neuron
-from Neural_Network.neural_network_gen import neuralNetworkGen
-from Neural_Network.forward import passForward
-from Utils.plot_Error_Curve import plotErrorCurve
-from Utils.activation_functions import getDerivative
-from Utils.error_functions import calculateError, calculateOutputLayerError
-from Utils.plot_decision_boundary import plotDecisionBoundary
+from Neural_Networks_Sub.Neural_Network.neural_network_gen import neuralNetworkGen
+from Neural_Networks_Sub.Neural_Network.forward import passForward
+from Neural_Networks_Sub.Utils.plot_Error_Curve import plotErrorCurve
+from Neural_Networks_Sub.Utils.activation_functions import getDerivative
+from Neural_Networks_Sub.Utils.error_functions import calculateError, calculateOutputLayerError
+from Neural_Networks_Sub.Utils.plot_decision_boundary import plotDecisionBoundary
 
 
 def backPropagation(

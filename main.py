@@ -1,7 +1,6 @@
-from Perceptron.perceptron import perceptron
-from Back_Propagation.back_propagation import backPropagation
-from Neuron.neuron import Neuron
-from Neural_Network.test_neural_network import testNeuralNetwork
+from Neural_Networks_Sub.Back_Propagation.back_propagation import backPropagation
+from Neural_Networks_Sub.Neuron.neuron import Neuron
+from Neural_Networks_Sub.Neural_Network.test_neural_network import testNeuralNetwork
 import numpy as np
 
 

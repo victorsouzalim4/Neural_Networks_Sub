@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from mpl_toolkits.mplot3d import Axes3D
-from Neural_Network.forward import passForward
+from Neural_Networks_Sub.Neural_Network.forward import passForward
 
 
 def plotDecisionBoundary(
