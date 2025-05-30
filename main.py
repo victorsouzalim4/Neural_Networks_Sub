@@ -24,4 +24,15 @@ expectedOutputs = [-1, -1, -1, -1, -1, -1, -1, 1]
 
 nn = backPropagation(2, 3, inputs, expectedOutputs, 100000, 0.0001, "Tanh-AND-3bits", "tanh", "online")
 
+inputs = np.array([
+    [0, 0.1, 0.05],
+    [0, 0.4, 1],
+    [0.2, 1, 0],
+    [0, 0.95, 1],
+    [1, 0.3, 0.01],
+    [1, 0.1, 1],
+    [0.99, 1, 0],
+    [0.97, 0.92, 0.98],
+])
+
 testNeuralNetwork(nn, inputs, expectedOutputs)

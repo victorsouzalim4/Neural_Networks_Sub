@@ -6,7 +6,7 @@ def testNeuralNetwork(layers, test_inputs, test_expected_outputs=None, activatio
 
     for i, input_vector in enumerate(test_inputs):
         outputs = passForward(layers, input_vector, activation)
-        final_output = outputs[-1][0]
+        final_output = float(outputs[-1][0])  # <-- Convertido aqui
 
         # Classificação baseada em limiar
         predicted_class = 1 if final_output >= threshold else -1
@@ -14,11 +14,11 @@ def testNeuralNetwork(layers, test_inputs, test_expected_outputs=None, activatio
 
         if test_expected_outputs:
             expected = test_expected_outputs[i]
-            print(f"Input: {input_vector}, Expected: {expected}, Predicted: {predicted_class}")
+            print(f"Input: {input_vector}, Expected: {expected}, Output: {final_output:.5f}, Predicted: {predicted_class}")
             if predicted_class == expected:
                 correct += 1
         else:
-            print(f"Input: {input_vector}, Predicted: {predicted_class}")
+            print(f"Input: {input_vector}, Output: {final_output:.5f}, Predicted: {predicted_class}")
 
     if test_expected_outputs:
         accuracy = correct / len(test_inputs)
