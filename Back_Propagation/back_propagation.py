@@ -116,3 +116,6 @@ def backPropagation(
             filename=fileName,
             outputDir="Backpropagation_benchmarks/DecisionBoundary"
         )
+    
+
+    return layers
