@@ -3,7 +3,7 @@ import os
 
 def plotErrorCurve(errorHistory, filename="error_curve.png"):
     # Cria o diretório se não existir
-    outputDir = os.path.join("Backpropagation_benchmarks", "teste")
+    outputDir = os.path.join("Analysis/Neural_network", "Backpropagation_benchmarks")
     if not os.path.exists(outputDir):
         os.makedirs(outputDir)
 
