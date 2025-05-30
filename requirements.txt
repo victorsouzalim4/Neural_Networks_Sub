@@ -1,4 +1,0 @@
-numpy>=2.2.5
-matplotlib>=3.5.0
-imageio>=2.9.0
-scikit-learn>=1.6.1
